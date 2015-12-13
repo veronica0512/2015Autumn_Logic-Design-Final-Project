@@ -1,0 +1,23 @@
+module HCounter(
+	input clk, 
+	input rci, 
+	input [5:0] hour_in,
+	output reg rco,
+	output reg [5:0] hour = 'b0
+	  );
+  
+always @(posedge clk) begin
+	if (hour_in)
+		hour <= hour_in;
+	if (rci == 1)
+		hour <= hour + 1;
+	if (hour == 'd24) begin
+		rco <= 1;
+		hour <= 'b0;
+	end
+	else
+		rco <= 0;
+end
+
+
+endmodule
