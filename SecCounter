@@ -1,0 +1,35 @@
+module SecCounter(
+	input clk, 
+	input [5:0] sec_in,
+	output reg rco,
+	output reg [5:0] sec = 'b0
+	  );
+	
+	parameter [27:0]M = 'b1; //'b0101_1111_0101_1110_0001_0000_0000; // 10^8 Hz
+	reg [27:0] t;
+
+always @(posedge clk) begin
+	if (sec_in) begin
+		sec <= sec_in;
+		t <= M - 1;
+	end
+	else if (t > 0) begin
+		t <= t - 1;
+	end
+	else if (t == 0) begin
+		sec <= sec + 1;
+		t <= M - 1;
+	end
+	if (sec == 'd60) begin
+		rco <= 1;
+		sec <= 0;
+	end
+	else begin
+		rco <= 0;
+	end
+end
+
+
+
+
+endmodule
