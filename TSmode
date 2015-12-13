@@ -1,0 +1,45 @@
+module TSmode(
+	 input clk,
+	 input enable,
+    input [5:0] hour_in,
+    input [5:0] min_in,
+	 input [5:0] sec_in,
+	 output reg am,
+	 output reg pm,
+    output reg [5:0] hour_out,
+    output reg [5:0] min_out,
+	 output reg [5:0] sec_out
+    );
+
+
+
+always @(posedge clk) begin
+	if (enable == 0) begin
+		hour_out <= hour_in;
+		min_out <= min_in;
+		sec_out <= sec_in;
+	end
+	else if (enable == 1) begin
+		if (hour_in < 12) begin
+			am <= 1;
+			pm <= 0;
+			hour_out <= hour_in;
+			min_out <= min_in;
+		end
+		else if (hour_in == 12) begin
+			am <= 0;
+			pm <= 1;
+			hour_out <= hour_in;
+			min_out <= min_in;
+		end
+		else begin
+			am <= 0;
+			pm <= 1;
+			hour_out <= hour_in - 12;
+			min_out <= min_in;
+		end
+	end
+end
+
+endmodule
+
